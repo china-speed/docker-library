@@ -1,0 +1,44 @@
+version: 2 # use CircleCI 2.0
+
+jobs: # a collection of steps
+  build: # runs not using Workflows must have a `build` job as entry point
+    branches:
+      only:
+        - master
+    docker: # run the steps with Docker 
+      - image: circleci/node # ...with this image as the primary container; this is where all `steps` will run
+    working_directory: ~/laravel # directory where steps will run
+    steps: # a set of executable commands
+      - checkout # special step to check out source code to working directory
+      - run:
+          name: Avoid hosts unknown for github # HACK circleci bug. https://discuss.circleci.com/t/git-clone-fails-in-circle-2-0/15211/11
+          command: mkdir -p ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+      - run:
+          name: Install and configure dependencies
+          command: |
+            sudo apt install -y python-pip
+            sudo -H pip install mkdocs
+            sudo npm install -g --silent gh-pages
+            sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
+            git config --global user.email "sinkcup+cyborg@gmail.com"
+            git config --global user.name "Cyborg Girl"
+      - add_ssh_keys:
+          fingerprints:
+            - "8d:4d:a0:2f:19:d2:d9:8c:ed:83:2c:20:bc:aa:32:f0"
+      - run:
+          name: Install subsplit and hub
+          command: |
+            sudo wget -O "$(git --exec-path)"/git-subsplit https://raw.githubusercontent.com/dflydev/git-subsplit/master/git-subsplit.sh
+            sudo chmod +x "$(git --exec-path)"/git-subsplit
+            wget -O /tmp/hub.tgz https://github.com/github/hub/releases/download/v2.11.2/hub-linux-amd64-2.11.2.tgz
+            mkdir -p ~/hub
+            tar -C ~/hub -zxvf /tmp/hub.tgz --strip-components=1
+            sudo ln -s `realpath ~/hub/bin/hub` /usr/local/bin/
+      - run:
+          name: Split to sub repos
+          command: ./split.sh
+      - run:
+          name: Deploy docs to gh-pages branch
+          command: |
+            ./build-docs.sh
+            gh-pages --dotfiles --message "[skip ci] Updates" --dist site

@@ -1,0 +1,3 @@
+FROM debian
+
+RUN sed -i 's/[a-z]\+.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list

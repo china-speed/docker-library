@@ -1,0 +1,9 @@
+FROM debian
+
+RUN apt-get update \
+    && apt-get install -y ca-certificates
+RUN sed -i 's/[a-z]\+.debian.org/mirrors.cloud.tencent.com/g' /etc/apt/sources.list
+RUN apt-get update
+RUN apt-get clean \
+    && apt-get autoclean \
+        && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
