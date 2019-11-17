@@ -71,20 +71,20 @@
 <h1 id="dockerfile">中国版 Dockerfile</h1>
 <p>由于 apt 等软件源使用的全球 CDN 难以在中国备案落地，导致中国开发者 docker build 很慢，影响效率，所以需要修改为国内源，进行加速。</p>
 <h2 id="docker">Docker</h2>
-<p>使用方法：非常简单，给 docker 名字加上“中国速度”前缀即可，比如 debian 变成了 chinaspeed/debian。</p>
+<p>使用方法：非常简单，给 docker 名字加上“中国速度”前缀即可，比如 debian:10 变成了 chinaspeed/debian:10。</p>
 <p>原版：</p>
-<pre><code>docker run -it debian bash
+<pre><code>docker run -it debian:10 bash
 apt update # 在中国很慢
 </code></pre>
 
 <p>中国版：</p>
-<pre><code>docker run -it chinaspeed/debian bash
+<pre><code>docker run -it chinaspeed/debian:10 bash
 apt update # 在中国很快
 </code></pre>
 
 <p>中国厂商版：</p>
-<pre><code>docker pull chinaspeed/debian-tencent
-docker pull chinaspeed/debian-aliyun
+<pre><code>docker pull chinaspeed/debian:10-tencent
+docker pull chinaspeed/debian:10-aliyun
 </code></pre>
 
 <h3 id="_1">问答</h3>
@@ -182,5 +182,5 @@ docker pull chinaspeed/debian-aliyun
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2019-11-17 09:37:38
+Build Date UTC : 2019-11-17 10:26:25
 -->
