@@ -4,27 +4,27 @@
 
 ## Docker
 
-使用方法：非常简单，给 docker 名字加上“中国速度”前缀即可，比如 debian 变成了 chinaspeed/debian。
+使用方法：非常简单，给 docker 名字加上“中国速度”前缀即可，比如 debian:10 变成了 chinaspeed/debian:10。
 
 原版：
 
 ```
-docker run -it debian bash
+docker run -it debian:10 bash
 apt update # 在中国很慢
 ```
 
 中国版：
 
 ```
-docker run -it chinaspeed/debian bash
+docker run -it chinaspeed/debian:10 bash
 apt update # 在中国很快
 ```
 
 中国厂商版：
 
 ```
-docker pull chinaspeed/debian-tencent
-docker pull chinaspeed/debian-aliyun
+docker pull chinaspeed/debian:10-tencent
+docker pull chinaspeed/debian:10-aliyun
 ```
 
 ### 问答
